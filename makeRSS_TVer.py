@@ -146,7 +146,7 @@ async def main():
     SubElement(channel, "link").text = ""
     for date, title, link in all_schedules:
         item = SubElement(channel, "item")
-        SubElement(item, "title").text = full_title
+        SubElement(item, "title").text = title
         SubElement(item, "link").text = link
         SubElement(item, "pubDate").text = date
     
