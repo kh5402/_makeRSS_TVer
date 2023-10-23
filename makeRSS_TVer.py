@@ -63,10 +63,11 @@ async def main():
     page = await browser.newPage()
     
     url = "https://tver.jp/newer" 
-    response = await page.goto(url)
+    await page.goto(url, {'waitUntil': 'networkidle0'})
+    await page.waitForSelector('div.newer-page-main_episodeList__f_N7H')  # このクラスが読み込まれるまで待つ
 
     # ログ出力を追加
-    print("現在のHTTPヘッダー:", response.headers)
+    #print("現在のHTTPヘッダー:", response.headers)
 
     # ページのHTMLを取得
     html = await page.content()
