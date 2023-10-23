@@ -70,7 +70,7 @@ jobs:
       
     - name: Run makeRSS
       run: python3 makeRSS_TVer.py
-      timeout-minutes: 5
+      timeout-minutes: 10
     
     - name: Commit and push changes
       run: |
