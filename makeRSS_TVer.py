@@ -120,7 +120,7 @@ async def main():
             # existing_schedules_check に含まれているかどうかを確認
             if link not in existing_schedules_check:
                 new_schedules.append((date, full_title, link))
-                print(f"新規情報を追加: {date, full_title, link}")  # ここで新規情報を出力
+                #print(f"新規情報を追加: {date, full_title, link}")  # ここで新規情報を出力
             else:
                 print(f"既存情報やからスキップ: {full_title}")  # 追加したログ出力
 
