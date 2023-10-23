@@ -33,11 +33,16 @@ async def main():
     # 既存のXMLファイルがあれば、その情報を取得
     existing_file = 'makeRSS_TVer.xml'
     existing_schedules = get_existing_schedules(existing_file) if os.path.exists(existing_file) else set()
-
+    
+    # 確認用：既存情報が空かどうか
+    print(f"既存情報: {existing_schedules}")
+    
     # 後で重複チェックするときの為の一覧
     existing_schedules_check = {url for _, _, url in existing_schedules}
-    print("existing_schedules_check：" + existing_schedules_check )
-    
+
+    # 確認用：既存情報チェック用も空かどうか
+    print(f"既存情報チェック用: {existing_schedules_check}")
+
     # 新規情報を保存するリスト
     new_schedules = []
         
