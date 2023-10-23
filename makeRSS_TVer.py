@@ -24,15 +24,6 @@ def get_existing_schedules(file_name):
         existing_schedules.add((date, title, url))
     return existing_schedules
 
-#URLが可変する部分を除外してURLを確認する
-def extract_url_part(url):
-    parsed_url = urlparse(url)
-    path = parsed_url.path.split("/")[-1]  # /103002 や /102232 を取得
-    query = parse_qs(parsed_url.query)
-    unique_part = f"{path}_{query.get('pri1', [''])[0]}_{query.get('wd00', [''])[0]}_{query.get('wd01', [''])[0]}_{query.get('wd02', [''])[0]}"
-    return unique_part
-
-
 async def main():
 
     # 既存のXMLファイルがあれば、その情報を取得
@@ -40,7 +31,7 @@ async def main():
     existing_schedules = get_existing_schedules(existing_file) if os.path.exists(existing_file) else set()
 
     # 後で重複チェックするときの為の一覧
-    existing_schedules_check = {(date, extract_url_part(url)) for date, _, url, _, _ in existing_schedules}
+    existing_schedules_check = {url for _, _, url in existing_schedules}
     
     # 新規情報を保存するリスト
     new_schedules = []
@@ -104,15 +95,20 @@ async def main():
             print(f"Link: {link}")
             
 
-            # 新規情報の確認 URLは変わるので日付とタイトルだけで確認
-            extracted_url = extract_url_part(url)
+            # 新規情報の確認
             try:
                 datetime.strptime(date, "%Y/%m/%d")  # ここで日付のフォーマットをチェック
-                if (date, extracted_url) not in existing_schedules_check:
+                print(f"日付のフォーマットはOKやで: {date}")
+
+                # existing_schedules_check に含まれているかどうかを確認
+                if url not in existing_schedules_check:
+                    print(f"既存情報やからスキップ: {date, extracted_url}")  # 追加したログ出力
+                else:
                     new_schedules.append((date, title, url, category, start_time))
                     print(f"新規情報を追加: {date, title, url, category, start_time}")  # ここで新規情報を出力
             except ValueError:
                 print(f"新規情報の日付のフォーマットがおかしいから、このデータはスキップするで！日付: {date}")
+
 
     
     print(new_schedules)
