@@ -23,7 +23,7 @@ jobs:
       run: |
         pip install requests pytz
 
-    - name: Run makeRSS_GoogleNews.py Script
+    - name: Run makeRSS
       run: python3 makeRSS_TVer.py  # Pythonファイルのパスを適切に設定してね
     
     - name: Commit and push changes
