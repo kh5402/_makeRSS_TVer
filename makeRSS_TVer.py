@@ -23,12 +23,19 @@ def main():
         ET.SubElement(channel, "description").text = "TVer"
         ET.SubElement(channel, "link").text = "https://tver.jp/newer"
 
+    logging.debug("Initialized RSS feed.")
+    
     url = "https://tver.jp/newer"
     response = requests.get(url)
     pageContent = response.text
+
+    logging.debug("Fetched webpage content.")
+    logging.debug(pageContent)
         
     # 正規表現で取得する部分
     articles = re.findall(r'<div class="newer-page-main_spEpisodeWrapper__huS6z">.*?</div></div></div></div>', pageContent)
+    logging.debug(f"Found {len(articles)} articles.")
+    
     for article in articles:
         link_match = re.search(r'href="(/episodes/[^"]+)"', article)
         title_match = re.search(r'<div class="episode-pattern-b-layout_mainTitle__iQ_2j">([^<]+)</div>', article)
@@ -53,6 +60,8 @@ def main():
         ET.SubElement(item, "title").text = full_title
         ET.SubElement(item, "link").text = link
         ET.SubElement(item, "pubDate").text = date_now
+
+    logging.debug("Added new item to RSS.")
                 
     # 整形して保存
     xml_str = ET.tostring(root)
@@ -66,6 +75,8 @@ def main():
 
     with open(output_file, "w") as f:
         f.write(xml_pretty_str)
+
+    logging.debug("Saved RSS feed.")
 
 if __name__ == "__main__":
     main()
