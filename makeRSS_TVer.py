@@ -76,12 +76,14 @@ async def main():
     # 各スケジュールの情報を取得
     for day_schedule in day_schedules:
         # ここで各子divの中身を出力して確認する
-        print(f"各子divの中身: {day_schedule}")
+        #print(f"各子divの中身: {day_schedule}")
 
         link_elem = day_schedule.find('a', class_='episode-pattern-b-layout_metaText__bndIm')
         title_elem_main = day_schedule.find('div', class_='episode-pattern-b-layout_mainTitle__iQ_2j')
         title_elem_sub = day_schedule.find('div', class_='episode-pattern-b-layout_subTitle__BnGfu')    
-            
+
+        print(link_elem)
+        
         if link_elem and title_elem_main and title_elem_sub:
             link = link_elem['href']
             title_main = title_elem_main.text
