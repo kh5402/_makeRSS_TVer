@@ -5,6 +5,7 @@ from datetime import datetime
 import pytz
 import os
 import re
+import logging
 
 def main():
     output_file = "makeRSS_TVer.xml"
