@@ -114,6 +114,8 @@ async def main():
             title_provider = title_elem_provider.text.strip()
         else:
             title_provider = None
+
+        print(title_provider)
             
         if link_elem and title_elem_main and title_elem_sub and title_elem_provider:
             link = "https://tver.jp" + link_elem['href']
