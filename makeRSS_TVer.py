@@ -119,7 +119,7 @@ async def main():
             link = "https://tver.jp" + link_elem['href']
             title_main = title_elem_main.text
             title_sub = title_elem_sub.text
-            title_provider = title_provider_sub.text
+            title_provider = title_provider_sub
 
             full_title = f"{title_main} {title_sub}"
             if title_provider:
