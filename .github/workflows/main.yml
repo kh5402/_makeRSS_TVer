@@ -1,8 +1,8 @@
 name: Run RSS Generator
 on:
   workflow_dispatch: # 手動で実行できるようにする
-  schedule:
-    - cron: '0 * * * *'  # 毎時0分に実行
+  #schedule:
+  #  - cron: '0 * * * *'  # 毎時0分に実行
 
 jobs:
   run-script:
@@ -22,9 +22,10 @@ jobs:
     - name: Install dependencies
       run: |
         pip install requests pytz
+        pip install pyppeteer
 
     - name: Run makeRSS
-      run: python3 makeRSS_TVer.py  # Pythonファイルのパスを適切に設定してね
+      run: python3 makeRSS_TVer.py
     
     - name: Commit and push changes
       run: |
