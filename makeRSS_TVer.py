@@ -1,12 +1,10 @@
-import requests
-import xml.etree.ElementTree as ET
-from xml.dom import minidom
+import asyncio
+from pyppeteer import launch
 from datetime import datetime
-import pytz
-import os
+import xml.etree.ElementTree as ET
 import re
 
-def main():
+async def main():
     output_file = "makeRSS_TVer.xml"
     
     # 既存のRSSフィードを読み込む
@@ -25,15 +23,14 @@ def main():
 
     print("Initialized RSS feed.")
     
-    url = "https://tver.jp/newer"
-    response = requests.get(url)
-    pageContent = response.text
-
-    # HTTPステータスコードと最初の100文字を出力
-    print(f"HTTP Status Code: {response.status_code}")
-    print(f"First 100 characters of the response: {response.text[:10000]}")
-        
-    # 正規表現で取得する部分
+    # Pyppeteerでブラウザ操作
+    browser = await launch(headless=True)
+    page = await browser.newPage()
+    await page.goto('https://tver.jp/newer')
+    
+    pageContent = await page.content()
+    
+    # 正規表現で記事を抽出
     articles = re.findall(r'<div class="newer-page-main_spEpisodeWrapper__huS6z">.*?</div></div></div></div>', pageContent)
     print(f"Found {len(articles)} articles.")
     
@@ -46,14 +43,11 @@ def main():
         title = title_match.group(1) if title_match else "Title not found"
         subtitle = subtitle_match.group(1) if subtitle_match else "Subtitle not found"
         
-        # タイトルとサブタイトルを結合
         full_title = f"{title} {subtitle}"
         
-        # 既存のリンクならスキップ
         if link in existing_links:
             continue
         
-        # 現在の日時を取得
         date_now = datetime.now().strftime('%a, %d %b %Y %H:%M:%S %Z')
         
         channel = root.find("channel")
@@ -61,23 +55,16 @@ def main():
         ET.SubElement(item, "title").text = full_title
         ET.SubElement(item, "link").text = link
         ET.SubElement(item, "pubDate").text = date_now
-
-    print("Added new item to RSS.")
-                
-    # 整形して保存
-    xml_str = ET.tostring(root)
     
-    # 不正なXML文字を取り除く
-    xml_str = re.sub(u'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]', '', xml_str.decode()).encode()
+    # RSSを保存
+    xml_str = ET.tostring(root)
     xml_pretty_str = minidom.parseString(xml_str).toprettyxml(indent="  ")
-
-    # 空白行を取り除く
     xml_pretty_str = os.linesep.join([s for s in xml_pretty_str.splitlines() if s.strip()])
-
     with open(output_file, "w") as f:
         f.write(xml_pretty_str)
-
+    
     print("Saved RSS feed.")
+    await browser.close()
 
 if __name__ == "__main__":
-    main()
+    asyncio.get_event_loop().run_until_complete(main())
