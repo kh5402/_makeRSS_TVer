@@ -11,6 +11,7 @@ import asyncio
 import requests
 from html import unescape as html_unescape
 from urllib.parse import urlparse, parse_qs
+from pytz import timezone
 
 # 既存のXMLファイルから情報取得
 def get_existing_schedules(file_name):
@@ -26,8 +27,10 @@ def get_existing_schedules(file_name):
 
 async def main():
 
-    # 現在の日付と時間を取得
-    now = datetime.now()
+
+    # 現在の日付と時間を日本時間で取得
+    jst = timezone('Asia/Tokyo')
+    now = datetime.now(jst)
     date = now.strftime("%Y/%m/%d %H:%M")
     
     # 既存のXMLファイルがあれば、その情報を取得
@@ -120,7 +123,6 @@ async def main():
             # existing_schedules_check に含まれているかどうかを確認
             if link not in existing_schedules_check:
                 new_schedules.append((date, full_title, link))
-                #print(f"新規情報を追加: {date, full_title, link}")  # ここで新規情報を出力
             else:
                 print(f"既存情報やからスキップ: {full_title}")  # 追加したログ出力
 
