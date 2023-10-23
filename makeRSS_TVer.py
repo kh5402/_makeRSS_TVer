@@ -61,7 +61,9 @@ async def main():
     )
         
     page = await browser.newPage()
-    esponse = await page.goto(url)
+    
+    url = "https://tver.jp/newer" 
+    response = await page.goto(url)
 
     # ログ出力を追加
     print("現在のHTTPヘッダー:", response.headers)
@@ -72,33 +74,24 @@ async def main():
     # BeautifulSoupで解析
     soup = BeautifulSoup(html, 'html.parser')
 
-    # スケジュール情報の取得
-    day_schedules = soup.find_all('div', class_='sc--day')
-    print(f"day_schedules: {day_schedules}")  # ここで取得した日ごとのスケジュール情報を出力
+    # 各エピソードの情報を取得
+    episodes = soup.find_all('div', class_='episode-pattern-b-layout_container__iciAm')
+    
+    for episode in episodes:
+        link_elem = episode.find('a', class_='episode-pattern-b-layout_metaText__bndIm')
+        title_elem_main = episode.find('div', class_='episode-pattern-b-layout_mainTitle__iQ_2j')
+        title_elem_sub = episode.find('div', class_='episode-pattern-b-layout_subTitle__BnGfu')
+        
+        if link_elem and title_elem_main and title_elem_sub:
+            link = link_elem['href']
+            title_main = title_elem_main.text
+            title_sub = title_elem_sub.text
 
-    # 各スケジュールの情報を取得
-    for day_schedule in day_schedules:
-        date_tag = day_schedule.find('div', class_='sc--day__hd js-pos a--tx')
-        if date_tag is None:
-            continue
-        date = f"{yyyymm[:4]}/{yyyymm[4:]}/{date_tag.find('p', class_='sc--day__d f--head').text}"
+            full_title = f"{title_main} {title_sub}"
             
-        schedule_links = day_schedule.find_all('a', class_='m--scone__a hv--op')
+            print(f"Full Title: {full_title}")
+            print(f"Link: {link}")
             
-        for link in schedule_links:
-                
-            title = re.search(r'<p class="m--scone__ttl">(.*?)</p>', str(link.find('p', class_='m--scone__ttl'))).group(1)
-            title_tag = link.find('p', class_='m--scone__ttl')
-            if title_tag:
-                title = title_tag.get_text()
-            title = html_unescape(str(title)) 
-                    
-            url = link['href']
-            url = html_unescape(str(url))
-                
-            category = link.find('p', class_='m--scone__cat__name').text
-            start_time_tag = link.find('p', class_='m--scone__start')
-            start_time = start_time_tag.text if start_time_tag else ''
 
             # 新規情報の確認 URLは変わるので日付とタイトルだけで確認
             extracted_url = extract_url_part(url)
@@ -125,7 +118,7 @@ async def main():
     # RSSフィードを生成
     rss = Element("rss", version="2.0")
     channel = SubElement(rss, "channel")
-    SubElement(channel, "title").text = "弓木奈於のスケジュール"
+    SubElement(channel, "title").text = "TVer"
     SubElement(channel, "description").text = ""
     SubElement(channel, "link").text = ""
     for date, title, url, category, start_time in all_schedules:
