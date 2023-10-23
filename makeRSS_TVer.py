@@ -74,7 +74,16 @@ async def main():
         
     # BeautifulSoupで解析
     soup = BeautifulSoup(html, 'html.parser')
-    print(soup.prettify()) 
+    #print(soup.prettify()) 
+
+    # 該当するdivタグを取得
+    target_divs = soup.select('div.episode-pattern-c_container__7UBI_')
+
+    # 確認のために出力
+    print(f"取得したdivの数: {len(target_divs)}")
+
+
+
 
     # 各エピソードの情報を取得
     episodes = soup.find_all('div', class_='episode-pattern-b-layout_container__iciAm')
