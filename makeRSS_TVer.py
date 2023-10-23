@@ -118,16 +118,17 @@ async def main():
             print(f"Link: {link}")
             
             # existing_schedules_check に含まれているかどうかを確認
-            if url not in existing_schedules_check:
-                print(f"既存情報やからスキップ: {full_title}")  # 追加したログ出力
+            if link not in existing_schedules_check:
+                new_schedules.append((date, full_title, link))
+                print(f"新規情報を追加: {date, full_title, link}")  # ここで新規情報を出力
             else:
-                new_schedules.append((date, title, link))
-                print(f"新規情報を追加: {date, title, link}")  # ここで新規情報を出力
+                print(f"既存情報やからスキップ: {full_title}")  # 追加したログ出力
+
     
     print(new_schedules)
             
     # 既存のスケジュール情報もリスト形式に変換
-    existing_schedules_list = [(date, title, link) for date, title, url in existing_schedules]
+    existing_schedules_list = [(date, title, link) for date, title, link in existing_schedules]
     
     # 既存の情報と新規情報を合わせる
     all_schedules = existing_schedules_list + new_schedules
