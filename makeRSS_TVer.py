@@ -78,9 +78,24 @@ async def main():
         # ここで各子divの中身を出力して確認する
         #print(f"各子divの中身: {day_schedule}")
 
-        link_elem = day_schedule.find('a', class_='episode-pattern-c_thumbnailWrapper__JVZ5K')['href']
-        title_elem_main = day_schedule.find('div', class_='episode-pattern-c_seriesTitle__8MwGR').text
-        title_elem_sub = day_schedule.find('div', class_='episode-pattern-c_episodeTitle__FCfJd').text
+        link_elem = day_schedule.find('a', class_='episode-pattern-c_thumbnailWrapper__JVZ5K')
+        if link_elem:
+            link = link_elem['href']
+        else:
+            link = None
+
+        title_elem_main = day_schedule.find('div', class_='episode-pattern-c_seriesTitle__8MwGR')
+        if title_elem_main:
+            title_main = title_elem_main.text.strip()
+        else:
+            title_main = None
+
+        title_elem_sub = day_schedule.find('div', class_='episode-pattern-c_episodeTitle__FCfJd')
+        if title_elem_sub:
+            title_sub = title_elem_sub.text.strip()
+        else:
+            title_sub = None
+
 
 
         print(link_elem)
