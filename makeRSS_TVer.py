@@ -26,6 +26,10 @@ def get_existing_schedules(file_name):
 
 async def main():
 
+    # 現在の日付と時間を取得
+    now = datetime.now()
+    date = now.strftime("%Y/%m/%d %H:%M")
+    
     # 既存のXMLファイルがあれば、その情報を取得
     existing_file = 'makeRSS_TVer.xml'
     existing_schedules = get_existing_schedules(existing_file) if os.path.exists(existing_file) else set()
@@ -113,19 +117,13 @@ async def main():
 
             # 新規情報の確認
             try:
-                datetime.strptime(date, "%Y/%m/%d")  # ここで日付のフォーマットをチェック
-                print(f"日付のフォーマットはOKやで: {date}")
 
                 # existing_schedules_check に含まれているかどうかを確認
                 if url not in existing_schedules_check:
                     print(f"既存情報やからスキップ: {date, extracted_url}")  # 追加したログ出力
                 else:
-                    new_schedules.append((date, title, url, category, start_time))
-                    print(f"新規情報を追加: {date, title, url, category, start_time}")  # ここで新規情報を出力
-            except ValueError:
-                print(f"新規情報の日付のフォーマットがおかしいから、このデータはスキップするで！日付: {date}")
-
-
+                    new_schedules.append((date, title, url))
+                    print(f"新規情報を追加: {date, title, url}")  # ここで新規情報を出力
     
     print(new_schedules)
             
@@ -136,7 +134,7 @@ async def main():
     all_schedules = existing_schedules_list + new_schedules
 
     # 日付の降順にソート
-    all_schedules.sort(key=lambda x: datetime.strptime(x[0], "%Y/%m/%d"), reverse=True)
+    all_schedules.sort(key=lambda x: datetime.strptime(x[0], "%Y/%m/%d %H:%M"), reverse=True)
 
     # RSSフィードを生成
     rss = Element("rss", version="2.0")
@@ -149,11 +147,11 @@ async def main():
         SubElement(item, "title").text = title
         SubElement(item, "link").text = url
         SubElement(item, "pubDate").text = date
-        SubElement(item, "category").text = category
-        SubElement(item, "start_time").text = start_time
-
     
     xml_str = xml.dom.minidom.parseString(tostring(rss)).toprettyxml(indent="   ")
+
+    # 空白行を取り除く
+    xml_str = os.linesep.join([s for s in xml_str.splitlines() if s.strip()])
 
     # ファイルに保存
     with open(existing_file, 'w', encoding='utf-8') as f:
