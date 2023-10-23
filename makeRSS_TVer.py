@@ -113,7 +113,7 @@ async def main():
         if title_elem_provider:
             title_provider = title_elem_provider.text.strip()
         else:
-            title_provider = None
+            title_provider = ""  # ない場合は "" とでもしておく？
 
         print(title_provider)
             
