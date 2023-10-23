@@ -67,20 +67,19 @@ async def main():
     soup = BeautifulSoup(html, 'html.parser')
     #print(soup.prettify()) 
 
-    # 該当するdivタグを取得
-    target_divs = soup.select('div.episode-pattern-c_container__7UBI_')
 
-    # 確認のために出力
-    print(f"取得したdivの数: {len(target_divs)}")
 
-    # スケジュール情報の取得
-    day_schedules = soup.find_all('div', class_='newer-page-main_episodeList__f_N7H')
-    print(f"取得したdivの数: {len(day_schedules)}")  # ここで取得したdivの数を出力
+    # スケジュール情報の親divを取得
+    parent_div = soup.find('div', class_='newer-page-main_episodeList__f_N7H')
+
+    # 子のdivを全て取得
+    day_schedules = parent_div.find_all('div', class_='episode-pattern-c_container__7UBI_')
+    print(f"取得した子divの数: {len(day_schedules)}")  # ここで取得した子divの数を出力
 
     # 各スケジュールの情報を取得
     for day_schedule in day_schedules:
-        # ここで各divの中身を出力して確認する
-        print(f"各divの中身: {day_schedule}")
+        # ここで各子divの中身を出力して確認する
+        print(f"各子divの中身: {day_schedule}")
 
     
 
