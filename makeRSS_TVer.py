@@ -38,13 +38,13 @@ async def main():
     existing_schedules = get_existing_schedules(existing_file) if os.path.exists(existing_file) else set()
     
     # 確認用：既存情報が空かどうか
-    print(f"既存情報: {existing_schedules}")
+    #print(f"既存情報: {existing_schedules}")
     
     # 後で重複チェックするときの為の一覧
     existing_schedules_check = {url for _, _, url in existing_schedules}
 
     # 確認用：既存情報チェック用も空かどうか
-    print(f"既存情報チェック用: {existing_schedules_check}")
+    #print(f"既存情報チェック用: {existing_schedules_check}")
 
     # 新規情報を保存するリスト
     new_schedules = []
@@ -134,10 +134,10 @@ async def main():
             if link not in existing_schedules_check:
                 new_schedules.append((date, full_title, link))
             else:
-                print(f"既存情報やからスキップ: {full_title}")  # 追加したログ出力
+                #print(f"既存情報やからスキップ: {full_title}")  # 追加したログ出力
 
     
-    print(new_schedules)
+    #print(new_schedules)
             
     # 既存のスケジュール情報もリスト形式に変換
     existing_schedules_list = [(date, title, link) for date, title, link in existing_schedules]
