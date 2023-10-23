@@ -109,7 +109,8 @@ async def main():
         else:
             title_sub = None
         
-        title_provider_elem = day_schedule.find('div', class_='episode-pattern-b-layout_productionProviderName__Y3fZn')
+        #title_provider_elem = day_schedule.find('div', class_='episode-pattern-b-layout_productionProviderName__Y3fZn')
+        title_provider_elem = day_schedule.find('div', class_=lambda x: x and 'episode-pattern-b-layout_productionProviderName__Y3fZn' in x.split())
         print(title_provider_elem)
         if title_provider_elem:
             title_provider_sub = title_provider_elem.text.strip()
