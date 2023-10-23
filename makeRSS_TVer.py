@@ -114,8 +114,8 @@ async def main():
 
             full_title = f"{title_main} {title_sub}"
             
-            print(f"Full Title: {full_title}")
-            print(f"Link: {link}")
+            #print(f"Full Title: {full_title}")
+            #print(f"Link: {link}")
             
             # existing_schedules_check に含まれているかどうかを確認
             if link not in existing_schedules_check:
@@ -142,7 +142,7 @@ async def main():
     SubElement(channel, "title").text = "TVer"
     SubElement(channel, "description").text = ""
     SubElement(channel, "link").text = ""
-    for date, title, url, category, start_time in all_schedules:
+    for date, title, link in all_schedules:
         item = SubElement(channel, "item")
         SubElement(item, "title").text = full_title
         SubElement(item, "link").text = link
