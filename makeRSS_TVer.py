@@ -31,7 +31,7 @@ def main():
 
     # HTTPステータスコードと最初の100文字を出力
     print(f"HTTP Status Code: {response.status_code}")
-    print(f"First 100 characters of the response: {response.text[:100]}")
+    print(f"First 100 characters of the response: {response.text[:10000]}")
         
     # 正規表現で取得する部分
     articles = re.findall(r'<div class="newer-page-main_spEpisodeWrapper__huS6z">.*?</div></div></div></div>', pageContent)
