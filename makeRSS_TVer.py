@@ -73,6 +73,7 @@ async def main():
         
     # BeautifulSoupで解析
     soup = BeautifulSoup(html, 'html.parser')
+    print(soup.prettify()) 
 
     # 各エピソードの情報を取得
     episodes = soup.find_all('div', class_='episode-pattern-b-layout_container__iciAm')
