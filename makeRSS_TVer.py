@@ -109,13 +109,17 @@ async def main():
         else:
             title_sub = None
         
-        title_elem_provider = day_schedule.find('div', class_='episode-pattern-b-layout_productionProviderName__Y3fZn')  # 追加
+        title_provider_elem = day_schedule.find('div', class_='episode-pattern-b-layout_productionProviderName__Y3fZn')
+        if title_provider_sub:
+            title_provider_sub = title_provider_elem.text.strip()
+        else:
+            title_provider_sub = ""
 
         if link_elem and title_elem_main and title_elem_sub:
             link = "https://tver.jp" + link_elem['href']
             title_main = title_elem_main.text
             title_sub = title_elem_sub.text
-            title_provider = title_elem_provider.text if title_elem_provider else None  # 修正
+            title_provider = title_provider_sub.text
 
             full_title = f"{title_main} {title_sub}"
             if title_provider:
