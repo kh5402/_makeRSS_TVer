@@ -109,18 +109,13 @@ async def main():
         else:
             title_sub = None
 
-        
-        all_divs = day_schedule.find_all('div')
-        print("all_divs：", all_divs)
-        title_provider_elem = next((div for div in all_divs if 'episode-pattern-b-layout_productionProviderName__Y3fZn' in div.get('class', [])), None)
-        print("title_provider_elem：", title_provider_elem)
-
-        print(title_provider_elem)
+        title_provider_elem = day_schedule.find('div', class_='episode-pattern-c_broadcastDateLabel__pkgF4')
         if title_provider_elem:
             title_provider_sub = title_provider_elem.text.strip()
         else:
             title_provider_sub = ""
 
+        
         if link_elem and title_elem_main and title_elem_sub:
             link = "https://tver.jp" + link_elem['href']
             title_main = title_elem_main.text
@@ -132,7 +127,7 @@ async def main():
                 full_title += f" {title_provider}"
 
             
-            #print(f"Full Title: {full_title}")
+            print(f"Full Title: {full_title}")
             #print(f"Link: {link}")
             
             # existing_schedules_check に含まれているかどうかを確認
