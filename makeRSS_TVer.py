@@ -116,7 +116,7 @@ async def main():
             
             # existing_schedules_check に含まれているかどうかを確認
             if url not in existing_schedules_check:
-                print(f"既存情報やからスキップ: {date, extracted_url}")  # 追加したログ出力
+                #print(f"既存情報やからスキップ: {date, extracted_url}")  # 追加したログ出力
             else:
                 new_schedules.append((date, title, url))
                 print(f"新規情報を追加: {date, title, url}")  # ここで新規情報を出力
