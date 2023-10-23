@@ -30,7 +30,7 @@ def main():
     pageContent = response.text
 
     print("Fetched webpage content.")
-    print(pageContent)
+    #print(pageContent)
         
     # 正規表現で取得する部分
     articles = re.findall(r'<div class="newer-page-main_spEpisodeWrapper__huS6z">.*?</div></div></div></div>', pageContent)
