@@ -65,8 +65,8 @@ jobs:
     - name: Check Chromium Path
       run: ls -l /usr/bin/chromium-browser
   
-    - name: Set Chromium Path
-      run: echo "CHROMIUM_PATH=/usr/bin/chromium-browser" >> $GITHUB_ENV
+    #- name: Set Chromium Path
+    #  run: echo "CHROMIUM_PATH=/usr/bin/chromium-browser" >> $GITHUB_ENV
       
     - name: Run makeRSS
       run: python3 makeRSS_TVer.py
