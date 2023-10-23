@@ -105,7 +105,7 @@ async def main():
         print(link_elem)
         
         if link_elem and title_elem_main and title_elem_sub:
-            link = link_elem['href']
+            link = "https://tver.jp/" + link_elem['href']
             title_main = title_elem_main.text
             title_sub = title_elem_sub.text
 
@@ -116,15 +116,15 @@ async def main():
             
             # existing_schedules_check に含まれているかどうかを確認
             if url not in existing_schedules_check:
-                #print(f"既存情報やからスキップ: {date, extracted_url}")  # 追加したログ出力
+                print(f"既存情報やからスキップ: {full_title}")  # 追加したログ出力
             else:
-                new_schedules.append((date, title, url))
-                print(f"新規情報を追加: {date, title, url}")  # ここで新規情報を出力
+                new_schedules.append((date, title, link))
+                print(f"新規情報を追加: {date, title, link}")  # ここで新規情報を出力
     
     print(new_schedules)
             
     # 既存のスケジュール情報もリスト形式に変換
-    existing_schedules_list = [(date, title, url) for date, title, url in existing_schedules]
+    existing_schedules_list = [(date, title, link) for date, title, url in existing_schedules]
     
     # 既存の情報と新規情報を合わせる
     all_schedules = existing_schedules_list + new_schedules
@@ -140,8 +140,8 @@ async def main():
     SubElement(channel, "link").text = ""
     for date, title, url, category, start_time in all_schedules:
         item = SubElement(channel, "item")
-        SubElement(item, "title").text = title
-        SubElement(item, "link").text = url
+        SubElement(item, "title").text = full_title
+        SubElement(item, "link").text = link
         SubElement(item, "pubDate").text = date
     
     xml_str = xml.dom.minidom.parseString(tostring(rss)).toprettyxml(indent="   ")
