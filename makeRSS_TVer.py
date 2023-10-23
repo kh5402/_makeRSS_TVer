@@ -65,33 +65,23 @@ async def main():
         
     # BeautifulSoupで解析
     soup = BeautifulSoup(html, 'html.parser')
-    #print(soup.prettify()) 
-
-
 
     # スケジュール情報の親divを取得
     parent_div = soup.find('div', class_='newer-page-main_episodeList__f_N7H')
 
     # 子のdivを全て取得
     day_schedules = parent_div.find_all('div', class_='episode-pattern-c_container__7UBI_')
-    print(f"取得した子divの数: {len(day_schedules)}")  # ここで取得した子divの数を出力
+    #print(f"取得した子divの数: {len(day_schedules)}")  # ここで取得した子divの数を出力
 
     # 各スケジュールの情報を取得
     for day_schedule in day_schedules:
         # ここで各子divの中身を出力して確認する
         print(f"各子divの中身: {day_schedule}")
 
-    
-
-
-    # 各エピソードの情報を取得
-    episodes = soup.find_all('div', class_='episode-pattern-b-layout_container__iciAm')
-    
-    for episode in episodes:
-        link_elem = episode.find('a', class_='episode-pattern-b-layout_metaText__bndIm')
-        title_elem_main = episode.find('div', class_='episode-pattern-b-layout_mainTitle__iQ_2j')
-        title_elem_sub = episode.find('div', class_='episode-pattern-b-layout_subTitle__BnGfu')
-        
+        link_elem = day_schedule.find('a', class_='episode-pattern-b-layout_metaText__bndIm')
+        title_elem_main = day_schedule.find('div', class_='episode-pattern-b-layout_mainTitle__iQ_2j')
+        title_elem_sub = day_schedule.find('div', class_='episode-pattern-b-layout_subTitle__BnGfu')    
+            
         if link_elem and title_elem_main and title_elem_sub:
             link = link_elem['href']
             title_main = title_elem_main.text
