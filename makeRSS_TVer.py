@@ -73,7 +73,16 @@ async def main():
     # 確認のために出力
     print(f"取得したdivの数: {len(target_divs)}")
 
+    # スケジュール情報の取得
+    day_schedules = soup.find_all('div', class_='newer-page-main_episodeList__f_N7H')
+    print(f"取得したdivの数: {len(day_schedules)}")  # ここで取得したdivの数を出力
 
+    # 各スケジュールの情報を取得
+    for day_schedule in day_schedules:
+        # ここで各divの中身を出力して確認する
+        print(f"各divの中身: {day_schedule}")
+
+    
 
 
     # 各エピソードの情報を取得
