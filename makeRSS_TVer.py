@@ -36,6 +36,7 @@ async def main():
 
     # 後で重複チェックするときの為の一覧
     existing_schedules_check = {url for _, _, url in existing_schedules}
+    print("existing_schedules_check：" + existing_schedules_check )
     
     # 新規情報を保存するリスト
     new_schedules = []
@@ -100,9 +101,6 @@ async def main():
         else:
             title_sub = None
 
-
-
-        print(link_elem)
         
         if link_elem and title_elem_main and title_elem_sub:
             link = "https://tver.jp" + link_elem['href']
